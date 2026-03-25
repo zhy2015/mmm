@@ -115,8 +115,12 @@
   一个极简版核心记忆骨架，示范这套方法想让核心层长什么样。
 - `references/system-intro.md`  
   给接入者看的快速说明。
+- `references/decision-record-example.md`  
+  展示 `mmm` 风格的 decision record / output shape。
 - `examples/minimal-adoption.md`  
   一个最小接入示例，示范怎么把 `mmm` 接进已有 agent。
+- `examples/output-schema-example.json`  
+  一个可直接参考的 JSON 输出示例。
 
 ## 推荐怎么接入
 
@@ -258,7 +262,9 @@ This repository is a **minimal shareable version** of the system, with a clear s
 - `AGENTS.md`
 - `MEMORY.md`
 - `references/system-intro.md`
+- `references/decision-record-example.md`
 - `examples/minimal-adoption.md`
+- `examples/output-schema-example.json`
 
 ## Suggested adoption path
 
