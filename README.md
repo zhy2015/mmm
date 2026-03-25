@@ -1,5 +1,11 @@
 # mmm
 
+[中文说明](#中文说明) · [English](#english)
+
+---
+
+# 中文说明
+
 `mmm` 是一套面向 AI agent / assistant 的**记忆收敛方法**。
 
 它不是教 AI “记更多”，而是教 AI **只保留真正值得保留的东西**：
@@ -9,8 +15,6 @@
 - 什么时候根本不该写入，而应该直接丢弃
 
 如果把普通 memory system 看作“存储器”，那 `mmm` 更像一个**裁决器（judge）**。
-
----
 
 ## 这是什么
 
@@ -25,8 +29,6 @@
 
 > `mmm` 关心的不是“能不能记住”，而是“这件事到底配不配被记住，以及应该记到哪一层”。
 
----
-
 ## 它解决什么问题
 
 很多 AI 系统一旦开始做长期记忆，很快会出现这些典型问题：
@@ -40,8 +42,6 @@
 `mmm` 就是专门为这些问题设计的。
 
 它把“记忆”看成一种**收敛机制**，而不是归档机制。
-
----
 
 ## 核心理念
 
@@ -84,8 +84,6 @@
 
 所以 `mmm` 是**先做判断，再决定是否下发给 skill specialist**。
 
----
-
 ## 它通常怎么工作
 
 面对一条新的 candidate，`mmm` 会做一条固定的收敛链：
@@ -97,8 +95,6 @@
 5. 应该 write、overwrite、downgrade、archive，还是 discard？
 
 所以它给出的不是“我帮你存一下”，而是一份**裁决结果**。
-
----
 
 ## 仓库里主要有什么
 
@@ -119,8 +115,8 @@
   一个极简版核心记忆骨架，示范这套方法想让核心层长什么样。
 - `references/system-intro.md`  
   给接入者看的快速说明。
-
----
+- `examples/minimal-adoption.md`  
+  一个最小接入示例，示范怎么把 `mmm` 接进已有 agent。
 
 ## 推荐怎么接入
 
@@ -137,8 +133,6 @@
 > `mmm` = memory convergence judge  
 > 不是 memory storage manager
 
----
-
 ## 适合谁
 
 这套东西尤其适合：
@@ -146,8 +140,6 @@
 - 已经有多层记忆、skills、daily memory、system prompt 的团队
 - 遇到“记忆越来越多，但系统越来越乱”的项目
 - 想把 AI 从“会记很多”推进到“会收敛、会裁决、会保持 SSOT”的人
-
----
 
 ## 设计边界
 
@@ -161,10 +153,143 @@
 
 它只保留适合公开分享和复用的最小核心材料。
 
----
-
 ## 给人的一句话介绍
 
 如果你要向别人解释这个项目，可以直接这么说：
 
 > `mmm` 是一套给 AI agent 用的记忆收敛方法。它不解决“怎么记更多”，而是解决“什么该记、记到哪层、旧真相怎么覆盖、新旧冲突怎么收敛、什么时候该丢掉而不是保存”。
+
+---
+
+# English
+
+`mmm` is a **memory convergence method** for AI agents and assistants.
+
+It is not about teaching an AI to remember more. It is about teaching an AI to **keep only what truly deserves to survive**:
+- what belongs in durable memory
+- what should stay in lower layers
+- when a new rule should overwrite an old one
+- when something should be discarded instead of being saved
+
+If a typical memory system is a storage layer, `mmm` is better understood as a **judge**.
+
+## What it is
+
+The core goal of `mmm` is not memory expansion, but **memory convergence**:
+- stop noise from being promoted into durable truth
+- stop conflicting versions from coexisting in core memory
+- stop one-off experiments from being miswritten as stable procedure
+- stop memory, skill, reference, and daily layers from collapsing into each other
+
+In one sentence:
+
+> `mmm` is not mainly asking “can this be remembered?” but “does this deserve to be remembered, and if so, where should it land?”
+
+## What problems it solves
+
+Once AI systems gain long-term memory, they often drift into predictable failure modes:
+- core memory turns into a running log
+- new rules are added while old ones remain, creating contradiction
+- temporary workarounds get promoted into durable policy
+- high-value lessons are buried in process noise
+- teams reach for skill rewrites when the real problem is still memory placement
+
+`mmm` exists to counter exactly those patterns.
+
+## Core ideas
+
+### 1. Candidate is not memory
+A lesson, observation, correction, or experience starts as a **candidate**, not as durable memory.
+
+### 2. Reject by default unless it earns promotion
+The default posture is not “save first.”
+It is:
+
+**reject first, unless the item clearly deserves durable retention.**
+
+Recency, effort, and pain are weak signals.
+The real threshold is whether the item will stably matter again.
+
+### 3. Core memory should stay small and behavior-shaping
+Core memory is not a replay of history.
+It should mainly hold:
+- stable preferences
+- stable operating rules
+- landed capabilities
+- important architectural / workflow decisions
+- high-value indexes
+
+### 4. Prefer single-source-of-truth
+When old and new guidance conflict, the system should converge on one current truth.
+Not keep both versions in core “just in case.”
+
+### 5. Judge the landing zone before rewriting skills
+Not every lesson belongs in the skill layer.
+Many items should instead land in:
+- `MEMORY.md`
+- `AGENTS.md`
+- `TOOLS.md`
+- `references/`
+- daily memory
+
+So `mmm` judges first, then decides whether a downstream skill specialist is even needed.
+
+## How it typically works
+
+For each new candidate, `mmm` follows a convergence chain:
+1. Is there a durable lesson at all?
+2. What kind of thing is it?
+3. Is it extending current truth, or replacing it?
+4. What is the smallest correct landing zone?
+5. Should it be written, overwritten, downgraded, archived, or discarded?
+
+So the output is not “I saved this,” but a **decision**.
+
+## What is in this repo
+
+This repository is a **minimal shareable version** of the system, with a clear split between files mainly for AI and files mainly for humans.
+
+### Mainly for AI
+- `skills/mmm/SKILL.md`
+- `skills/skill-creator-enhanced/SKILL.md`
+
+### Mainly for humans
+- `README.md`
+- `AGENTS.md`
+- `MEMORY.md`
+- `references/system-intro.md`
+- `examples/minimal-adoption.md`
+
+## Suggested adoption path
+
+A simple integration path is:
+1. add `skills/mmm/SKILL.md` to your skill system
+2. route durable-lesson judgment, memory placement, SSOT overwrite decisions, run-snapshot retention, and skill-layer escalation questions through `mmm` first
+3. let `mmm` judge; do not let it automatically own every downstream rewrite
+4. only hand off to `skill-creator-enhanced` once the skill layer is clearly the right landing zone
+5. keep core memory small and leave execution detail, traces, and concrete run context in lower layers
+
+Short version:
+
+> `mmm` is a memory convergence judge, not a memory storage manager.
+
+## Who this is for
+
+This project is especially useful for people building:
+- AI agents
+- AI assistants
+- long-term memory systems
+- multi-layer memory / skill architectures
+- systems that already suffer from memory drift, contradiction, or noise promotion
+
+## Design boundary
+
+This export intentionally does **not** include:
+- user-private files
+- user profiles
+- transcripts
+- daily memory
+- private references
+- environment-specific private operating context
+
+It only includes the minimum reusable materials that are suitable for public sharing.
