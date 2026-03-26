@@ -121,8 +121,10 @@
   说明仓库级运行姿态,尤其是为什么采用 `mmm-first convergence`。
 - `MEMORY.md`
   一个极简版核心记忆骨架,示范这套方法想让核心层长什么样。
-- `references/system-intro.md`
+- `references/system-intro.md`  
   给接入者看的快速说明。
+- `references/adoption-map.md`
+  用最小安装顺序解释 `mmm` 应该放在系统哪里。
 - `references/decision-record-example.md`  
   展示 `mmm` 风格的 decision record / output shape。
 - `references/adoption-pitfalls.md`

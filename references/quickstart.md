@@ -16,11 +16,13 @@ If you only have 3 minutes, read in this order:
 
 1. `README.md`  
    Understand what `mmm` is and what problem it solves.
-2. `skills/mmm/SKILL.md`  
+2. `references/adoption-map.md`
+   See the smallest install shape end to end.
+3. `skills/mmm/SKILL.md`  
    This is the actual upstream judge your system should route to first.
-3. `AGENTS.md`  
+4. `AGENTS.md`  
    Copy/adapt the routing posture into your own runtime rules.
-4. `MEMORY.md`  
+5. `MEMORY.md`  
    Use as a shape reference for what core memory should stay like.
 
 ## Smallest working integration
