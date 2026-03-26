@@ -27,7 +27,16 @@
           "type": "object",
           "properties": {
             "title": { "type": "string" },
-            "body": { "type": "string" }
+            "body": { "type": "string" },
+            "metadata": {
+              "type": "object",
+              "description": "Required when layer is 'skill'. Used for L2 aging and governance.",
+              "properties": {
+                "created_at": { "type": "string", "format": "date-time" },
+                "downgrade_condition": { "type": "string", "description": "Under what condition should this skill be archived or downgraded?" }
+              },
+              "required": ["downgrade_condition"]
+            }
           },
           "required": ["title", "body"]
         },

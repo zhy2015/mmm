@@ -100,7 +100,7 @@ class TestPhysicalExecution:
 
     def test_physical_skill_iteration(self, workspace):
         """
-        验证蒸馏并写入到特定 Skill 层的功能
+        验证蒸馏并写入到特定 Skill 层的功能（含 L2 元数据门禁测试）
         """
         executor = MemoryExecutor(workspace)
 
@@ -114,18 +114,24 @@ class TestPhysicalExecution:
                 "rationale": "Iterating skill based on new edge case.",
                 "content": {
                     "title": "Data Analyzer Constraint",
-                    "body": "Always clean NaN values before aggregation."
+                    "body": "Always clean NaN values before aggregation.",
+                    "metadata": {
+                        "created_at": "2023-10-25T12:00:00Z",
+                        "downgrade_condition": "If a new pandas version auto-cleans NaN"
+                    }
                 }
             }
         }
         executor.execute_write_decision(write_decision=write_skill_json["write_decision"])
 
-        # 验证该 skill 的物理文件被创建或修改
+        # 验证该 skill 的物理文件被创建或修改，且包含了元数据
         skill_path = os.path.join(workspace, "skills", "data-analyzer.md")
         assert os.path.exists(skill_path)
         with open(skill_path, "r") as f:
             content = f.read()
             assert "clean NaN values" in content
+            assert "created_at: 2023-10-25T12:00:00Z" in content
+            assert "downgrade_condition: If a new pandas version auto-cleans NaN" in content
 
         # 验证动态加载该 Skill
         read_json = {
@@ -138,6 +144,7 @@ class TestPhysicalExecution:
         }
         assembled_context = executor.execute_read_decision(read_decision=read_json["read_decision"])
         assert "clean NaN values" in assembled_context
+        assert "downgrade_condition" in assembled_context
 
     def test_the_ultimate_layer_loop(self, workspace):
         """
@@ -175,7 +182,11 @@ class TestPhysicalExecution:
             "rationale": "Domain knowledge.",
             "content": {
                 "title": "Python Style",
-                "body": "Use Type Hints for all function arguments."
+                "body": "Use Type Hints for all function arguments.",
+                "metadata": {
+                    "created_at": "2023-10-26T10:00:00Z",
+                    "downgrade_condition": "If Python 4 removes type hints"
+                }
             }
         })
 
