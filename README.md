@@ -25,7 +25,7 @@ Most Agent memory systems fail because they mix Identity, Experience, and Knowle
 
 `mmm` acts as the single judge for both reading and writing, preventing "double truths."
 
-![Architecture (English)](assets/save_system_en.png)
+![Architecture (English)](assets/architect.png)
 
 ### Phase A: The READ Path (Context Assembly)
 *Triggered when a new user request arrives.*
@@ -101,7 +101,7 @@ This verifies that the Agent respects the "Quiet System" rule, handles SSOT over
 
 `mmm` 作为读写操作的单一法官，彻底杜绝了“双重事实（Double Truths）”的出现。
 
-![Architecture (Chinese)](assets/save_system_zh.png)
+![Architecture (Chinese)](assets/architect.png)
 
 ### 阶段 A：读链路 (上下文组装 Context Assembly)
 *触发条件：新的用户请求到达时。*
