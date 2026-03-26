@@ -10,6 +10,10 @@ It is intentionally trimmed so other users can adopt the core method without inh
 - `AGENTS.md`
 - `MEMORY.md`
 - `README.md`
+- `references/start-here.md`
+- `references/quickstart.md`
+- `references/adoption-map.md`
+- `references/adoption-pitfalls.md`
 - `examples/minimal-adoption.md`
 
 ## Not included
@@ -22,11 +26,12 @@ It is intentionally trimmed so other users can adopt the core method without inh
 
 ## Recommended adoption order
 
-1. read `README.md`
-2. wire `skills/mmm/SKILL.md` as the first-stop convergence path
-3. keep `AGENTS.md` as the repo-level posture file
-4. keep `MEMORY.md` minimal and index-like
-5. use `skill-creator-enhanced` only when convergence has already determined the skill layer is the right destination
+1. read `references/start-here.md`
+2. read `README.md`
+3. wire `skills/mmm/SKILL.md` as the first-stop convergence path
+4. keep `AGENTS.md` as the repo-level posture file
+5. keep `MEMORY.md` minimal and index-like
+6. use `skill-creator-enhanced` only when convergence has already determined the skill layer is the right destination
 
 ## Practical note
 
