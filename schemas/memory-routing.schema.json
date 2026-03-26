@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MMM Convergence Output",
+  "description": "The strict JSON data structure that mmm must output when judging both READ (context assembly) and WRITE (memory retention) operations.",
+  "type": "object",
+  "required": ["operation_type"],
+  "properties": {
+    "operation_type": {
+      "type": "string",
+      "enum": ["write", "read"],
+      "description": "Indicates whether mmm is judging a memory candidate (write) or assembling context for a task (read)."
+    },
+    "write_decision": {
+      "type": "object",
+      "description": "Required if operation_type is 'write'.",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": ["write", "overwrite", "downgrade", "archive", "discard", "handoff"]
+        },
+        "layer": {
+          "type": "string",
+          "enum": ["core_memory", "skill", "none"]
+        },
+        "rationale": { "type": "string" },
+        "content": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "body": { "type": "string" }
+          },
+          "required": ["title", "body"]
+        },
+        "target_skill": { "type": "string" }
+      },
+      "required": ["action", "layer", "rationale", "content"]
+    },
+    "read_decision": {
+      "type": "object",
+      "description": "Required if operation_type is 'read'. Specifies what context must be loaded for the current task.",
+      "properties": {
+        "task_intent": { "type": "string", "description": "What the user is trying to do." },
+        "skills_to_load": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Which skills should be dynamically loaded."
+        },
+        "memories_to_recall": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Specific memory domains, run snapshots, or rules to retrieve."
+        },
+        "rationale": { "type": "string", "description": "Why these specific contexts are needed." }
+      },
+      "required": ["task_intent", "skills_to_load", "memories_to_recall", "rationale"]
+    }
+  }
+}

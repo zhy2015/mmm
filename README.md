@@ -1,314 +1,148 @@
-# mmm
+# OpenClaw `mmm` Memory Convergence System
 
-[中文说明](#中文说明) · [English](#english)
+[🇨🇳 切换至中文版 (Chinese Version)](#openclaw-mmm-记忆收敛系统-中文说明)
 
----
-
-# 中文说明
-
-## 快速入口
-
-如果你想快速接入而不先读完整仓库，先看：
-- `references/start-here.md`
-- `references/quickstart.md`
-- `skills/mmm/SKILL.md`
-- `AGENTS.md`
-- `MEMORY.md`
-
-`mmm` 是一套面向 AI agent / assistant 的**记忆收敛方法**。
-
-它不是教 AI "记更多",而是教 AI **只保留真正值得保留的东西**:
-- 什么该进入长期记忆
-- 什么只该留在低层记录
-- 什么时候应该覆盖旧规则,而不是把新旧都留下
-- 什么时候根本不该写入,而应该直接丢弃
-
-如果把普通 memory system 看作"存储器",那 `mmm` 更像一个**裁决器(judge)**。
-
-## 这是什么
-
-`mmm` 的核心目标不是扩容记忆,而是做 **memory convergence**:
-
-- 防止噪音升级成长期真相
-- 防止系统里同时存在多个互相冲突的版本
-- 防止把一次性试错误写成稳定方法
-- 防止记忆层、技能层、参考层、daily 层混在一起
-
-一句话说:
-
-> `mmm` 关心的不是"能不能记住",而是"这件事到底配不配被记住,以及应该记到哪一层"。
-
-## 它解决什么问题
-
-很多 AI 系统一旦开始做长期记忆,很快会出现这些典型问题:
-
-- 什么都想存,最后核心记忆变成流水账
-- 新规则写进去了,旧规则还留着,系统越来越矛盾
-- 明明只是一次临时 workaround,却被误当成长期方法
-- 真实有价值的 lesson 和大量过程噪音混在一起
-- 一看到问题就改 skill,结果其实只是记忆落层没判断清楚
-
-`mmm` 就是专门为这些问题设计的。
-
-它把"记忆"看成一种**收敛机制**,而不是归档机制。
-
-## 核心理念
-
-### 1. Candidate is not memory
-任何 lesson、经验、修正、观察,刚出现时都只是 **candidate**。
-它还不是长期记忆。
-
-### 2. 默认拒绝,除非它配得上
-`mmm` 的默认姿态不是"先记下来再说",而是:
-
-**先拒绝,除非它真的值得长期保留。**
-
-最近、痛苦、花时间,并不自动说明它有长期价值。
-真正的门槛是:
-- 未来是否会稳定复用
-- 是否会持续影响判断
-- 是否构成新的单一真相(SSOT)
-
-### 3. 核心记忆必须小而有行为塑形力
-核心记忆不是历史回放。
-它应该主要承载:
-- 稳定偏好
-- 稳定规则
-- 已落地能力
-- 重要架构 / 工作流决策
-- 高价值索引
-
-### 4. 单一真相优先
-如果新旧规则冲突,系统应该收敛到一个当前版本。
-而不是把两个版本同时留在核心层"以防万一"。
-
-### 5. 先判断落层,再决定是否改技能
-不是所有 lesson 都该进入 skill layer。
-很多内容其实只该落到:
-- `MEMORY.md`
-- `AGENTS.md`
-- `TOOLS.md`
-- `references/`
-- daily memory
-
-所以 `mmm` 是**先做判断,再决定是否下发给 skill specialist**。
-
-## 它通常怎么工作
-
-面对一条新的 candidate,`mmm` 会做一条固定的收敛链:
-
-1. 它到底是不是 durable lesson?
-2. 它属于哪类:fact / preference / procedure / safety boundary / capability / run snapshot / raw event / workaround?
-3. 它是在扩展当前真相,还是在替换当前真相?
-4. 最小正确落点是哪一层?
-5. 应该 write、overwrite、downgrade、archive,还是 discard?
-
-所以它给出的不是"我帮你存一下",而是一份**裁决结果**。
-
-## 仓库里主要有什么
-
-这个仓库是一个**可分享的最小体系版本**,重点区分"给 AI 读"和"给人读"的部分。
-
-### 主要给 AI 读
-- `skills/mmm/SKILL.md`
-  上游收敛判断入口。AI 应该优先读这个。
-- `skills/skill-creator-enhanced/SKILL.md`
-  当问题已经明确落到 skill layer 后,再交给它处理。
-
-### 主要给人读
-- `README.md`
-  帮人快速理解这套体系到底是什么。
-- `AGENTS.md`
-  说明仓库级运行姿态,尤其是为什么采用 `mmm-first convergence`。
-- `MEMORY.md`
-  一个极简版核心记忆骨架,示范这套方法想让核心层长什么样。
-- `references/system-intro.md`
-  给接入者看的快速说明。
-- `references/adoption-map.md`
-  用最小安装顺序解释 `mmm` 应该放在系统哪里。
-- `references/decision-record-example.md`
-  展示 `mmm` 风格的 decision record / output shape。
-- `references/adoption-pitfalls.md`
-  帮接入者避开最常见的错误安装姿势。
-- `examples/minimal-adoption.md`
-  一个最小接入示例,示范怎么把 `mmm` 接进已有 agent。
-- `examples/output-schema-example.json`
-  一个可直接参考的 JSON 输出示例。
-
-## 推荐怎么接入
-
-如果你想把这套东西接进自己的 agent / assistant,通常可以这样做:
-
-1. 把 `skills/mmm/SKILL.md` 放进你的 skill system
-2. 明确一条路由规则:凡是涉及 durable lesson、记忆落层、SSOT 覆盖、run snapshot 去留、是否该上升到 skill layer 的问题,先走 `mmm`
-3. 让 `mmm` 负责"判断与裁决",不要让它顺手接管所有下游改写动作
-4. 如果已经明确落到 skill layer,再交给 `skill-creator-enhanced`
-5. 保持核心记忆小,把运行细节、trace、具体案例、当日上下文留在 lower layers
-
-最短版理解:
-
-> `mmm` = memory convergence judge
-> 不是 memory storage manager
-
-## 适合谁
-
-这套东西尤其适合:
-- 在做 AI agent / AI assistant / long-term memory system 的人
-- 已经有多层记忆、skills、daily memory、system prompt 的团队
-- 遇到"记忆越来越多,但系统越来越乱"的项目
-- 想把 AI 从"会记很多"推进到"会收敛、会裁决、会保持 SSOT"的人
-
-## 设计边界
-
-这个导出仓库刻意**不包含**:
-- 用户隐私文件
-- 用户画像
-- 对话记录
-- daily memory
-- 私有 references
-- 任何绑定某个个人环境的运行上下文
-
-它只保留适合公开分享和复用的最小核心材料。
-
-## 给人的一句话介绍
-
-如果你要向别人解释这个项目,可以直接这么说:
-
-> `mmm` 是一套给 AI agent 用的记忆收敛方法。它不解决"怎么记更多",而是解决"什么该记、记到哪层、旧真相怎么覆盖、新旧冲突怎么收敛、什么时候该丢掉而不是保存"。
+This repository implements a **Memory Management Unit (MMU)** for AI Agents. It replaces the naive "save everything" approach with a strict **Convergence Judge** that intercepts all memory Read/Write operations to prevent context window bloat, schizophrenic agent behavior, and "Scrapbook Anti-patterns".
 
 ---
 
-# English
+## 1. Core Philosophy: The L0-L3 Four-Layer Memory Architecture
 
-`mmm` is a **memory convergence method** for AI agents and assistants.
+Most Agent memory systems fail because they mix Identity, Experience, and Knowledge. `mmm` enforces strict separation of concerns:
 
-It is not about teaching an AI to remember more. It is about teaching an AI to **keep only what truly deserves to survive**:
-- what belongs in durable memory
-- what should stay in lower layers
-- when a new rule should overwrite an old one
-- when something should be discarded instead of being saved
+| Layer | What it is | When it acts | `mmm`'s Role | Storage Location |
+|---|---|---|---|---|
+| **L0 (Identity)** | Principles, preferences, absolute boundaries. | **Always On** (L1 Cache). Evaluated before any action. | `mmm` protects this layer. Only highly durable "behavior-shaping rules" get promoted here. | `AGENTS.md`, `MEMORY.md` |
+| **L3 (Experience)** | Past conversations, run snapshots, "what we did yesterday". | **On Demand** (L3b). Pulled only when `mmm` explicitly asks for it via `read_decision`. | `mmm` writes snapshots here during Phase B, and recalls them during Phase A ONLY if needed. | `daily/`, `archive/` |
+| **L2 (Local Knowledge)** | Docs, code snippets, factual references. | **On Demand**. Searched by dedicated tools (e.g., Sirchmunk) when evidence is needed. | `mmm` does NOT store knowledge. It points to `references/` or triggers knowledge retrieval tools. | `references/`, `skills/` |
+| **L1 (Web)** | External facts. | **Last Resort**. | `mmm` avoids this unless L2/L3 fails. | External |
 
-If a typical memory system is a storage layer, `mmm` is better understood as a **judge**.
+**A good memory system is quiet.** `mmm` ensures we don't dump L3 (Experiences) into L0 (Identity).
 
-## What it is
+---
 
-The core goal of `mmm` is not memory expansion, but **memory convergence**:
-- stop noise from being promoted into durable truth
-- stop conflicting versions from coexisting in core memory
-- stop one-off experiments from being miswritten as stable procedure
-- stop memory, skill, reference, and daily layers from collapsing into each other
+## 2. Architecture Data Flow (CQRS)
 
-In one sentence:
+`mmm` acts as the single judge for both reading and writing, preventing "double truths."
 
-> `mmm` is not mainly asking "can this be remembered?" but "does this deserve to be remembered, and if so, where should it land?"
+![Architecture (English)](assets/save_system_en.png)
 
-## What problems it solves
+### Phase A: The READ Path (Context Assembly)
+*Triggered when a new user request arrives.*
+1. User says: "Parse this PDF and output a summary."
+2. OpenClaw routes the intent to `mmm` (Phase A).
+3. `mmm` outputs JSON indicating which **Skills** (e.g., `pdf-parser`) and **Memories** (e.g., `pdf_formatting_rules` from L3) to dynamically load.
+4. OpenClaw injects ONLY these requested assets into the Context Window.
 
-Once AI systems gain long-term memory, they often drift into predictable failure modes:
-- core memory turns into a running log
-- new rules are added while old ones remain, creating contradiction
-- temporary workarounds get promoted into durable policy
-- high-value lessons are buried in process noise
-- teams reach for skill rewrites when the real problem is still memory placement
+### Phase B: The WRITE Path (Memory Retention)
+*Triggered when a task completes, fails, or user says "Save".*
+1. Task finishes. Agent learns a new API constraint.
+2. Agent submits this candidate to `mmm` (Phase B).
+3. `mmm` evaluates: Is it durable? Does it conflict with L0?
+4. `mmm` outputs JSON (`write_decision`: write, overwrite, downgrade, or discard).
+5. OpenClaw executes the file system writes exactly as dictated.
 
-`mmm` exists to counter exactly those patterns.
+---
 
-## Core ideas
+## 3. Directory Structure
 
-### 1. Candidate is not memory
-A lesson, observation, correction, or experience starts as a **candidate**, not as durable memory.
+### Agent Runtime Zone (The Core)
+This entire repository is built as a standard Anthropic Skill package.
+- `SKILL.md`: **The Prompt/Logic for the `mmm` Convergence Judge.** This is the entry point of the `mmm` skill.
+- `schemas/memory-routing.schema.json`: The hard JSON contract that `mmm` MUST output during Read/Write decisions.
+- `scripts/skill-creator-enhanced/SKILL.md`: A bundled downstream execution script/skill. Triggered ONLY when `mmm` decides a structural skill rewrite is needed (handoff).
+- `scripts/core/memory_executor.py`: The physical execution layer that safely writes JSON decisions to disk.
 
-### 2. Reject by default unless it earns promotion
-The default posture is not "save first."
-It is:
+### Human Reference & Testing Zone (Isolated from Agent Context)
+- `references/`: Theoretical background, example config (`agent.yml`), and L0 identity examples (`AGENTS.md`, `MEMORY.md`).
+- `tests/`: End-to-end and unit tests verifying the compliance of any Agent using this system. Run with `pytest tests/ -v`.
+- `examples/`: Adoption examples.
 
-**reject first, unless the item clearly deserves durable retention.**
+---
 
-Recency, effort, and pain are weak signals.
-The real threshold is whether the item will stably matter again.
+## 4. Getting Started & Verification
 
-### 3. Core memory should stay small and behavior-shaping
-Core memory is not a replay of history.
-It should mainly hold:
-- stable preferences
-- stable operating rules
-- landed capabilities
-- important architectural / workflow decisions
-- high-value indexes
+If you are integrating `mmm` into OpenClaw, your implementation MUST pass the provided compliance test suite.
 
-### 4. Prefer single-source-of-truth
-When old and new guidance conflict, the system should converge on one current truth.
-Not keep both versions in core "just in case."
+```bash
+# Run the compliance tests
+pytest tests/ -v
+```
 
-### 5. Judge the landing zone before rewriting skills
-Not every lesson belongs in the skill layer.
-Many items should instead land in:
-- `MEMORY.md`
-- `AGENTS.md`
-- `TOOLS.md`
-- `references/`
-- daily memory
+This verifies that the Agent respects the "Quiet System" rule, handles SSOT overwrites correctly, and successfully closes the "Write-then-Read" end-to-end loop.
 
-So `mmm` judges first, then decides whether a downstream skill specialist is even needed.
+---
+---
 
-## How it typically works
+# OpenClaw `mmm` 记忆收敛系统 (中文说明)
 
-For each new candidate, `mmm` follows a convergence chain:
-1. Is there a durable lesson at all?
-2. What kind of thing is it?
-3. Is it extending current truth, or replacing it?
-4. What is the smallest correct landing zone?
-5. Should it be written, overwritten, downgraded, archived, or discarded?
+[🇬🇧 Switch to English Version (英文版)](#openclaw-mmm-memory-convergence-system)
 
-So the output is not "I saved this," but a **decision**.
+本项目为 AI Agent 实现了一个**内存管理单元 (MMU)**。它摒弃了粗暴的“保存所有对话”的做法，通过一个严格的**收敛裁判 (Convergence Judge)** 拦截所有的记忆读写操作，防止上下文窗口膨胀、Agent 行为精神分裂以及“剪贴簿反模式”。
 
-## What is in this repo
+---
 
-This repository is a **minimal shareable version** of the system, with a clear split between files mainly for AI and files mainly for humans.
+## 1. 核心哲学：L0-L3 四层记忆架构
 
-### Mainly for AI
-- `skills/mmm/SKILL.md`
-- `skills/skill-creator-enhanced/SKILL.md`
+绝大多数 Agent 记忆系统失败的原因在于它们混淆了“身份(Identity)”、“经历(Experience)”和“知识(Knowledge)”。`mmm` 强制执行严格的职责分离：
 
-### Mainly for humans
-- `README.md`
-- `AGENTS.md`
-- `MEMORY.md`
-- `references/system-intro.md`
-- `references/decision-record-example.md`
-- `examples/minimal-adoption.md`
-- `examples/output-schema-example.json`
+| 层级 | 是什么 | 触发时机 | `mmm` 的职责 | 存储位置 |
+|---|---|---|---|---|
+| **L0 (身份)** | 原则、偏好、绝对边界。 | **常驻** (L1 Cache)。任何动作前都会被评估。 | `mmm` 负责保护这一层。只有极高复用价值的“行为塑造规则”才允许升格至此。 | `AGENTS.md`, `MEMORY.md` |
+| **L3 (经历)** | 历史对话、运行快照、“昨天我们做了什么”。 | **按需加载** (L3b)。只有当 `mmm` 明确要求读取时才出场。 | `mmm` 在写入阶段将快照降级到此处，并在读取阶段仅拉取相关的快照。 | `daily/`, `archive/` |
+| **L2 (本地知识)** | 文档、代码片段、事实参考。 | **按需加载**。当需要证据时由专属工具（如 Sirchmunk）搜索。 | `mmm` **不存储**知识。它只负责输出指令让其他工具去检索。 | `references/`, `skills/` |
+| **L1 (外网)** | 外部事实。 | **最后手段**。 | 除非 L2/L3 找不到，否则 `mmm` 尽量避免使用。 | External |
 
-## Suggested adoption path
+**一个好的记忆系统是安静的。** `mmm` 确保我们绝不会把 L3 的冗长经历当成 L0 的身份塞进核心区。
 
-A simple integration path is:
-1. add `skills/mmm/SKILL.md` to your skill system
-2. route durable-lesson judgment, memory placement, SSOT overwrite decisions, run-snapshot retention, and skill-layer escalation questions through `mmm` first
-3. let `mmm` judge; do not let it automatically own every downstream rewrite
-4. only hand off to `skill-creator-enhanced` once the skill layer is clearly the right landing zone
-5. keep core memory small and leave execution detail, traces, and concrete run context in lower layers
+---
 
-Short version:
+## 2. 架构与数据流 (CQRS)
 
-> `mmm` is a memory convergence judge, not a memory storage manager.
+`mmm` 作为读写操作的单一法官，彻底杜绝了“双重事实（Double Truths）”的出现。
 
-## Who this is for
+![Architecture (Chinese)](assets/save_system_zh.png)
 
-This project is especially useful for people building:
-- AI agents
-- AI assistants
-- long-term memory systems
-- multi-layer memory / skill architectures
-- systems that already suffer from memory drift, contradiction, or noise promotion
+### 阶段 A：读链路 (上下文组装 Context Assembly)
+*触发条件：新的用户请求到达时。*
+1. 用户说：“解析这份 PDF 并输出摘要。”
+2. OpenClaw 将意图路由给 `mmm` (阶段 A)。
+3. `mmm` 输出 JSON，指示应该动态加载哪些 **技能(Skills)** (如 `pdf-parser`) 和哪些 **历史记忆(Memories)** (如从 L3 拉取防坑快照)。
+4. OpenClaw 将这些被选中的资产连同 L0 文件一起注入到当前上下文窗口。
 
-## Design boundary
+### 阶段 B：写链路 (记忆收敛 Memory Retention)
+*触发条件：任务完成、报错，或用户显式发送“保存”指令。*
+1. 任务结束，Agent 学到了一个新的 API 限制。
+2. Agent 将候选经验提交给 `mmm` (阶段 B)。
+3. `mmm` 评估：这经验持久吗？它是否和 L0 原有的规则冲突？
+4. `mmm` 输出 JSON 决策 (`write_decision`: 写入、覆盖、降级或丢弃)。
+5. OpenClaw 的执行器严格按照决策写入物理文件系统。
 
-This export intentionally does **not** include:
-- user-private files
-- user profiles
-- transcripts
-- daily memory
-- private references
-- environment-specific private operating context
+---
 
-It only includes the minimum reusable materials that are suitable for public sharing.
+## 3. 目录结构
+
+### 核心运行时区 (Agent Runtime Zone)
+整个仓库本身就是一个标准的 Anthropic Skill 包。
+- `SKILL.md`: **`mmm` 收敛裁判的提示词与逻辑。** 这是 Agent 唯一需要读取的大脑文件。
+- `schemas/memory-routing.schema.json`: 强 JSON 契约。规定了 `mmm` 在读写时必须输出的数据格式。
+- `scripts/skill-creator-enhanced/SKILL.md`: 绑定的下游重构专家。仅在 `mmm` 裁决需要修改底层代码结构（handoff）时被唤醒。
+- `scripts/core/memory_executor.py`: 物理执行层，负责安全地将 JSON 决策落盘。
+
+### 人类阅读与测试区 (与 Agent 隔离)
+- `references/`: 理论背景、配置范本 (`agent.yml`) 以及 L0 身份范本 (`AGENTS.md`, `MEMORY.md`)。
+- `tests/`: 端到端测试套件，用于验证接入此系统的 Agent 是否合规。
+- `examples/`: 代码接入示例。
+
+---
+
+## 4. 接入与验证
+
+如果你正准备将 `mmm` 接入 OpenClaw，你的代码实现必须通过以下合规性测试：
+
+```bash
+# 运行强制准入测试
+pytest tests/ -v
+```
+
+该测试将验证 Agent 是否遵守了“安静系统”原则，是否能正确处理 SSOT 覆盖，以及能否成功闭环“写后即用”的端到端生命周期。

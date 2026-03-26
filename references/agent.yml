@@ -1,0 +1,39 @@
+# agent.yml 
+# 遵循 AI-CODING-STANDARD v1.0 MUST-001 规范的统一契约
+version: "1.0"
+description: "OpenClaw mmm-first Convergence Configuration"
+
+commands:
+  # MUST-003: 提交前必须通过静态检查。我们用 check-jsonschema 来验证记忆数据。
+  lint: "check-jsonschema --schemafile schemas/memory-routing.schema.json examples/*.json"
+  test: "pytest tests/ -v"
+
+triggers:
+  # 显式保存指令拦截：当用户说“保存”或类似意图时，强制将当前会话历史打入 mmm 的 Write Phase 进行提炼
+  explicit_save:
+    intent_keywords: ["保存", "记住", "save", "remember this"]
+    action: "trigger_mmm_write_phase"
+    target: "SKILL.md"
+
+test_policy:
+  endpoint_requires: [contract_test]
+  service_requires: [unit_test]
+
+security_boundaries:
+  stop_conditions:
+    # MUST-009: 绝对红线
+    - "ddl_change"
+    - "auth_logic_change"
+    - "public_api_breaking_change"
+    - "cross_service_dataflow_refactor"
+    # mmm 专属红线：
+    - "bypassing_mmm_convergence_judge" # 绕过 mmm 节点直接写 memory
+    - "modifying_openclaw_core_execution" # 阻塞或侵入 openclaw 核心工作流
+  forbidden_paths:
+    - "generated/"
+    - "references/" # 人类阅读区，禁止 Agent 运行时读取以防污染上下文 (MUST-002)
+    - "examples/"   # 人类阅读区，禁止 Agent 运行时读取
+
+routing_rules:
+  upstream_judge: "SKILL.md"
+  downstream_specialist: "scripts/skill-creator-enhanced/SKILL.md"
