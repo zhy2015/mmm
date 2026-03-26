@@ -14,6 +14,8 @@ When the system encounters:
 
 route the candidate to `skills/mmm/SKILL.md` first.
 
+If you are adopting this repo into another runtime, this is the one rule you should preserve even if you rewrite the rest.
+
 `mmm` is the upstream convergence judge.
 It decides:
 - whether something should be kept at all
